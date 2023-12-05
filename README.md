@@ -43,3 +43,4 @@ Monstres :
  	lvl 4 : HP : (151-195)   DEF : (12-18)   DMG : (26-30)   critluck : 0.40   luck : 0.40   EXP : 0   LVL : 4
  	lvl 5 : HP : (196-245)   DEF : (17-24)   DMG : (30-34)   critluck : 0.45   luck : 0.40   EXP : 0   LVL : 5
  	lvl 6 : HP : (246-300)   DEF : (23-31)   DMG : (34-38)   critluck : 0.50   luck : 0.40   EXP : 0   LVL : 6
+  	25%luck Parer les attaques de mélées s'ils ont des armes de mélées également.
