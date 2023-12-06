@@ -16,25 +16,37 @@ Des événements : des combats
       			   La compétence innée n'est plus utilisable pour le combat.
 		- Salie :
   			Lancer un objet:
-  			   Proj explosif
-     			   Proj inflammable (Type : Feu, Debuff : Fire)
+  			   Tonneau Explosif
+     			   Boule de Feu (Type : Feu, Debuff : Fire)
 	   		   Potion jetable d'acide (Type : Acide, Debuff : Fire)
 			   Potion jetable de Poison (Type : Poison, Debuff : Poison)
-		- Utiliser un Consommable (soin, défense, attaque)
+		- Utiliser un Consommable :
+ 				- Potions de Soin (Grande, Moyenne, Petite)
+	  			- Potions de Régénération
+	  			- Antidote d'effets d'altérations
+      				- Poudre de Camouflage (invisible, devient visible à la prochaine attaque, avec 100%CRIT)
+	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
+    				- Potion de Téléportation (1 seul dans le jeu, obtenu au début)
 		- Fuire : 25% succès (L'EXP n'est pas obtenu, on va directement à la zone suivante).
 	Lors d'une victoire d'un combat, un trésor apparaît :
-		-> 3 choix de récompenses (on ne les connaît pas à l'avance):
+		-> des récompenses (3 possibilités aléatoires):
 			- rd.randint stats d'une arme (Élevé / Moyen / Faible)
-			- rd.randint statsUP (Élevé / Moyen / Faible)
+   			- rd.randint qté de Consommables:
+      				- Potions de Soin (Grande, Moyenne, Petite)
+	  			- Potions de Régénération
+	  			- Antidote d'effets d'altérations
+      				- Poudre de Camouflage
+	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
 			- 10%luck = Mimic :
 			   Attaque élevée (+50%)
         		   Il attaque en premier
 		    Drop un rd.randint Consommable / Arme avec stats élevées
 		-> +100EXP/100EXP -> LVLup HP/DEF/DMG +15%
-	Lors d'une défaite : Mort / recommencer au dernier Point de Sauvegarde.
+	Lors d'une défaite : Mort / Recommencer le jeu.
 Compétences innées :
 	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT.
  	LVL 3 - Salie -> Fureur : lance trois projectiles choisis.
+  	LVL 2 -> Adrénaline lorsque HP < 20%, le personnage fait + 50% DMG
 Monstres :
 	lvl 0 : HP : (40-60)     DEF : (1-3)     DMG : (10-14)   critluck : 0.20   luck : 0.40   EXP : 0   LVL : 0
  	lvl 1 : HP : (61-85)     DEF : (2-5)     DMG : (14-18)   critluck : 0.25   luck : 0.40   EXP : 0   LVL : 1
@@ -43,4 +55,4 @@ Monstres :
  	lvl 4 : HP : (151-195)   DEF : (12-18)   DMG : (26-30)   critluck : 0.40   luck : 0.40   EXP : 0   LVL : 4
  	lvl 5 : HP : (196-245)   DEF : (17-24)   DMG : (30-34)   critluck : 0.45   luck : 0.40   EXP : 0   LVL : 5
  	lvl 6 : HP : (246-300)   DEF : (23-31)   DMG : (34-38)   critluck : 0.50   luck : 0.40   EXP : 0   LVL : 6
-  	25%luck Parer les attaques de mélées s'ils ont des armes de mélées également.
+  	25%luck Parer Attaque basique.
