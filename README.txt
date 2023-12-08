@@ -24,24 +24,21 @@ Des événements : des combats
  				- Potions de Soin (Grande, Moyenne, Petite)
 	  			- Potions de Régénération
 	  			- Antidote d'effets d'altérations
-      				- Poudre de Camouflage (invisible, devient visible à la prochaine attaque, avec 100%CRIT)
 	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
-    				- Potion de Téléportation (1 seul dans le jeu, obtenu au début)
 		- Fuire : 25% succès (L'EXP n'est pas obtenu, on va directement à la zone suivante).
 	Lors d'une victoire d'un combat, un trésor apparaît :
-		-> des récompenses (3 possibilités aléatoires):
-			- rd.randint stats d'une arme (Élevé / Moyen / Faible)
-   			- rd.randint qté de Consommables:
+		-> des récompenses:
+   			- rd.randint(1, 3) qté de Consommables:
       				- Potions de Soin (Grande, Moyenne, Petite)
 	  			- Potions de Régénération
 	  			- Antidote d'effets d'altérations
       				- Poudre de Camouflage
 	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
-			- 10%luck = Mimic :
+			- 25%luck = Mimic :
 			   Attaque élevée (+50%)
         		   Il attaque en premier
-		    Drop un rd.randint Consommable / Arme avec stats élevées
-		-> +100EXP/100EXP -> LVLup HP/DEF/DMG +15%
+		    Drop un rd.randint(4, 6) Consommables
+		-> +50EXP/100EXP -> LVLup HP/DEF/DMG +15%
 	Lors d'une défaite : Mort / Recommencer le jeu.
 Compétences innées :
 	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT.
