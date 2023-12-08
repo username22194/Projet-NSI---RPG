@@ -1,11 +1,13 @@
-# Projet-NSI---RPG
+# Projet-NSI_RPG
 Notre jeu :
 
 Deux personnages : 
    Salie  : HP : 100   DEF : 05   DMG : 12   critluck : 0.25   luck : 0.75   EXP : 0   LVL : 1
    Magnus : HP : 150   DEF : 10   DMG : 10   critluck : 0.30   luck : 0.60   EXP : 0   LVL : 1
-Une histoire : Personnage venant de Ravensbrook (village), part à l'aventure. Il commence de son village (lvl0), va dans une plaine (lvl1-2), puis s'enfonce dans la forêt (lvl2-3), avant de gravire une montagne(3-4), dans laquelle il trouve un château abandonné(5-6). Dans chaque zone, il combat un monstre, de niveau différent.
-Des événements : des combats
+
+Une histoire : Personnage venant de Ravensbrook (village), part à l'aventure. Il commence de son village, va dans une plaine, puis s'enfonce dans la forêt, avant de gravire une montagne, dans laquelle il trouve un château abandonné. Dans chaque zone trouve des monstres de niveau plus élevés selon la zone (0, 1-2, 2-3, 3-4, 5-6).
+
+Des combats
   -> Coups critiques
 	-> Les attaques :
 		- Attaquer
@@ -18,32 +20,38 @@ Des événements : des combats
   			Lancer un objet:
   			   Tonneau Explosif
      			   Boule de Feu (Type : Feu, Debuff : Fire)
-	   		   Potion jetable d'acide (Type : Acide, Debuff : Fire)
-			   Potion jetable de Poison (Type : Poison, Debuff : Poison)
+	   		   Potion jetable d'acide (Debuff : Acide)
+			   Parfum de Poison (Debuff : Poison)
 		- Utiliser un Consommable :
  				- Potions de Soin (Grande, Moyenne, Petite)
 	  			- Potions de Régénération
 	  			- Antidote d'effets d'altérations
 	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
 		- Fuire : 25% succès (L'EXP n'est pas obtenu, on va directement à la zone suivante).
-	Lors d'une victoire d'un combat, un trésor apparaît :
-		-> des récompenses:
-   			- rd.randint(1, 3) qté de Consommables:
-      				- Potions de Soin (Grande, Moyenne, Petite)
-	  			- Potions de Régénération
-	  			- Antidote d'effets d'altérations
-      				- Poudre de Camouflage
-	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
-			- 25%luck = Mimic :
-			   Attaque élevée (+50%)
-        		   Il attaque en premier
-		    Drop un rd.randint(4, 6) Consommables
-		-> +50EXP/100EXP -> LVLup HP/DEF/DMG +15%
-	Lors d'une défaite : Mort / Recommencer le jeu.
+
+Récup d'herbes pour faire des Consommables.
+
+Lors d'une victoire d'un combat, un trésor apparaît :
+	-> des récompenses:
+		- rd.randint(1, 3) qté de Consommables:
+			- Potions de Soin (Grande, Moyenne, Petite)
+			- Potions de Régénération
+			- Antidote d'effets d'altérations
+			- Poudre de Camouflage
+			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
+		- 25%luck = Mimic :
+		   Attaque élevée (+50%)
+		   Il attaque en premier
+	    Drop un rd.randint(4, 6) Consommables
+	-> +50EXP/100EXP -> LVLup HP/DEF/DMG +15%
+
+Lors d'une défaite : Mort / Recommencer le jeu.
+
 Compétences innées :
 	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT.
  	LVL 3 - Salie -> Fureur : lance trois projectiles choisis.
   	LVL 2 -> Adrénaline lorsque HP < 20%, le personnage fait + 50% DMG
+
 Monstres :
 	lvl 0 : HP : (40-60)     DEF : (1-3)     DMG : (10-14)   critluck : 0.20   luck : 0.40   EXP : 0   LVL : 0
  	lvl 1 : HP : (61-85)     DEF : (2-5)     DMG : (14-18)   critluck : 0.25   luck : 0.40   EXP : 0   LVL : 1
