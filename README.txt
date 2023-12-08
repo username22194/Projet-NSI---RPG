@@ -23,9 +23,10 @@ Des combats
 	   		   Potion jetable d'acide (Debuff : Acide)
 			   Parfum de Poison (Debuff : Poison)
 		- Utiliser un Consommable :
- 				- Potions de Soin (Grande, Moyenne, Petite)
-	  			- Potions de Régénération
-	  			- Antidote d'effets d'altérations
+ 				- Potion de Soin (Grande, Moyenne, Petite)
+	  			- Potion de Régénération
+	  			- Potion de Défense
+				- Potion de Rage
 	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
 		- Fuire : 25% succès (L'EXP n'est pas obtenu, on va directement à la zone suivante).
 
