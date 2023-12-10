@@ -25,6 +25,9 @@ class Personnage:
         self.luck = luck
         self.EXP = EXP
         self.lvl = lvl
+        self.FireDOT = int(self.DMG*0.30)
+        self.AcidDOT = int(self.DMG*0.70)
+        self.PoisonDOT = int(self.DMG*0.2)
 
     def estVivant(self):
         return self.HP > 0
@@ -46,7 +49,7 @@ class Personnage:
         if crit == True:
             print(f"{self.nom} inflige {DamageDealt} dégâts. C'est un coup critique ! ")
         else:
-            print(f"{self.nom} inflige {DamageDealt} dégâts. ")
+            print(f"{self.nom} inflige {DamageDealt - target.DEF} dégâts. ")
 
 
     def LancerProjectile(self, target, choixProjectile): #Salie Action 2
@@ -58,63 +61,60 @@ class Personnage:
             if crit == True:
                 print(f"Vous infligez {DamageDealt} dégâts (coup critique ! ). ")
             else:
-                print(f"Vous infligez {DamageDealt} dégâts. ")
+                print(f"Vous infligez {DamageDealt - target.DEF} dégâts. ")
         
         if choixProjectile == 2: #Boule de feu
+            target.FireCondition = True
+            target.FireTours = 3
             print("Boule de feu")
             DamageDealt, crit = Critique(self.critluck, self.DMG)
             DamageDealt = int(DamageDealt*0.80)
             target.DégâtsSubis(DamageDealt, crit)
             if crit == True:
-                print(f"Vous infligez {DamageDealt - target.DEF} dégâts (coup critique !). ")
+                print(f"Vous infligez {DamageDealt} dégâts (coup critique !). ")
             else:
                 print(f"Vous infligez {DamageDealt - target.DEF} dégâts. ")
 
             def Enflammé(target):
-                global FireCondition
-                global FireTours
-                global FireDOT
-                FireCondition = True
-                FireTours = 3
-                
-                FireDOT = self.DMG
-                FireDOT = int(FireDOT*0.40)
-                target.HP = int(target.HP - FireDOT)
-            print(f"L'ennemi prendra {FireDOT} dégâts de feu pendant 3 tours. ")
+                target.HP = int(target.HP - self.FireDOT)
+                target.FireTours -= 1
+                if target.FireTours == 0:
+                    target.FireCondition = False
+            print(f"L'ennemi prendra {self.FireDOT} dégâts de feu pendant 3 tours. ")
 
             
             
         if choixProjectile == 3: #Potion jetable d'acide
             print("Potion jetable d'acide")
-            global AcidCondition
-            global AcidTours
-            global AcidDOT
-            AcidCondition = True
-            AcidTours = 3
+            target.AcidCondition = True
+            target.AcidTours = 3
             DamageDealt, crit = Critique(self.critluck, self.DMG)
             DamageDealt = int(DamageDealt*0.25)
             target.DégâtsSubis(DamageDealt, crit)
-            AcidDOT = self.DMG
-            AcidDOT = int(AcidDOT*0.8)
-            
             if crit == True:
-                print(f"Vous infligez {DamageDealt} dégâts (coup critique !) et l'ennemi reçoit {AcidDOT} dégâts pendant 3 tours. ")
+                print(f"Vous infligez {DamageDealt} dégâts (coup critique ! ). ")
             else:
-                print(f"Vous infligez {DamageDealt} dégâts, et l'ennemi reçoit {AcidDOT} dégâts pendant 3 tours. ")
+                print(f"Vous infligez {DamageDealt - target.DEF} dégâts. ")
+
+            def Acidifié(target):
+                target.HP = int(target.HP - self.AcidDOT)
+                target.AcidTours -= 1
+                if target.AcidTours == 0:
+                    target.AcidCondition = False
+            print("L'ennemi prendra {self.AcidDOT} dégâts d'acide pendant 3 tours. ")
+
             
         if choixProjectile == 4: #Parfum de poison
             target.PoisonCondition = True
             target.PoisonTours = 999
-            target.PoisonDOT
             print("Parfum empoisonné")
-            global PoisonCondition
-            global PoisonTours
-            global PoisonDOT
-            PoisonCondition = True
-            PoisonTours = 999
-            PoisonDOT = self.DMG
-            PoisonDOT = int(PoisonDOT*0.20)
-            print(f"L'ennemi recevra {PoisonDOT} à chaque tour.")
+
+            def Empoisonné(target):
+                target.HP = int(target.HP - self.PoisonDOT)
+                target.PoisonTours -= 1
+                if target.PoisonTours == 0:
+                    target.PoisonCondition = False
+            print(f"L'ennemi recevra {self.PoisonDOT} à chaque tour.")
 
     def ParerUneAttaque(self): #Magnus Action 2
         self.ParerCondition = True
@@ -161,13 +161,21 @@ class Personnage:
                 if self.HP > Héros.HP:
                     self.HP = Héros.HP
                 print(f"Vous vous soignez de {int(Héros.HP*0.2)} points de vie. Votre vie : {self.HP}")
-            print(f"Vous vous soignez de {int(Héros.HP*0.2)} pendant 5 tours. Votre vie : {self.HP}.")
+                self.RegenTours -= 1
+                if self.RegenTours == 0:
+                    self.RegenCondition = False
+                    print("La régénération prend fin. ")
+            print(f"Vous vous soignerez de {int(Héros.HP*0.2)} pendant 5 tours. Votre vie : {self.HP}.")
         
         if choixConsommable == 3: #DEFUp
             self.DEFCondition = True
             self.DEFTours = 5
             def AugmentationDEF(self):
                 self.DEF = int(Héros.DEF*1.35)
+                self.DEFTours -= 1
+                if self.DEFTours == 0:
+                    self.DEFCondition = False
+                    print("Votre ")
             print(f"Vous augmentez votre défense de {self.DEF} pendant 5 tours. Votre défense : {self.DEF}")
         
         if choixConsommable == 4: #DMGUp
@@ -348,7 +356,15 @@ def main():
             continue
         print()
 
-        if hasattr
+        if hasattr(Monstre, "FireCondition") and Monstre.FireCondition:
+            Monstre.Enflammé()
+            print(f"L'ennemi prend {HérosCombat.FireDOT} dégâts de feu. ")
+        if hasattr(Monstre, "AcidCondition") and Monstre.AcidCondition:
+            Monstre.Acidifié()
+            print(f"L'ennemi prend {HérosCombat.AcidDOT} dégâts d'acide. ")
+        if hasattr(Monstre, "PoisonCondition") and Monstre.PoisonCondition:
+            Monstre.Empoisonné()
+            print(f"L'ennemi prend {HérosCombat.PoisonDOT} dégâts de poison. ")
         if not Monstre.estVivant():
             print("Vous avez gagné ! ")
             break
