@@ -34,9 +34,9 @@ class Personnage:
         self.luck = luck
         self.EXP = EXP
         self.lvl = lvl
-        self.FireDOT = int(self.DMG*0.30)
+        self.FireDOT = int(self.DMG*0.35)
         self.AcidDOT = int(self.DMG*0.70)
-        self.PoisonDOT = int(self.DMG*0.2)
+        self.PoisonDOT = int(self.DMG*0.25)
 
     def estVivant(self):
         return self.HP > 0
@@ -77,9 +77,9 @@ class Personnage:
                 target.FireTours = 3
                 print("Boule de feu")
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
-                DamageDealt = int(DamageDealt*0.80)
+                DamageDealt = int(DamageDealt*0.75)
                 target.DégâtsSubis(DamageDealt, crit)
-                print(f"{Monstre.name} prendra {self.FireDOT} dégâts de feu pendant 3 tours. ")
+                print(f"{MonstreCombat.nom} prendra {self.FireDOT} dégâts de feu pendant 3 tours. ")
                 return ""
 
                 
@@ -88,9 +88,9 @@ class Personnage:
                 target.AcidCondition = True
                 target.AcidTours = 3
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
-                DamageDealt = int(DamageDealt*0.25)
+                DamageDealt = int(DamageDealt*0.30)
                 target.DégâtsSubis(DamageDealt, crit)
-                print(f"{Monstre.name} prendra {self.AcidDOT} dégâts d'acide pendant 3 tours. ")
+                print(f"{MonstreCombat.nom} prendra {self.AcidDOT} dégâts d'acide pendant 3 tours. ")
                 return ""
 
                 
@@ -98,7 +98,7 @@ class Personnage:
                 target.PoisonCondition = True
                 target.PoisonTours = 999
                 print("Parfum empoisonné")
-                print(f"{Monstre.name} recevra {self.PoisonDOT} à chaque tour.")
+                print(f"{MonstreCombat.nom} recevra {self.PoisonDOT} à chaque tour.")
                 return ""
             
             else:
@@ -310,28 +310,33 @@ monstre_zone = [monstres_zone1, monstres_zone2, monstres_zone3, monstres_zone4, 
 
 def SummonMonstre(zone):
     global Monstre
+    global MonstreCombat
     Monstre = Personnage(
         rd.choice(monstre_zone[zone-1]),                        #nom
         rd.randint(40 + (20 * zone-1), 60 + (20 * zone-1)),     #HP
         rd.randint(1 + (zone-1), 3 + (zone-1)),                 #DEF
         rd.randint(10 + (4 * zone-1), 14 + (4 * zone-1)),       #DMG
         0.20 + (0.05 * (zone-1)), 0.40)                           #critluck, luck
+    MonstreCombat = Monstre
 
     
 def mainCombat():
     global Héros
     global HérosCombat
-    Tour = 0
+    Tour = 1
+    print(f"Tour : {Tour}")
+    print("--------------------")
 
-    while Héros.estVivant() and Monstre.estVivant():
-        Tour += 1
-        print(f"Tour : {Tour}")
+    while Héros.estVivant() and MonstreCombat.estVivant():
         if hasattr(HérosCombat, "RegenCondition") and HérosCombat.RegenCondition:
-            print(HérosCombat.Régénération())
+            print(HérosCombat.Régénération(Héros))
         if hasattr(HérosCombat, "DEFCondition") and HérosCombat.DEFCondition:
-            print(HérosCombat.AugmentationDEF())
+            print(HérosCombat.AugmentationDEF(Héros))
         if hasattr(HérosCombat, "RageCondition") and HérosCombat.RageCondition:
-            print(HérosCombat.AugmentationDMG())
+            print(HérosCombat.AugmentationDMG(Héros))
+
+        print(f"La vie de {HérosCombat.nom} : {HérosCombat.HP}")
+        print("--------------------")
 
         if ChoixHéros == 1:
             print("Quelle action ? Entrez un nombre : ")
@@ -352,10 +357,10 @@ def mainCombat():
         print("--------------------")
 
         if choix == 1: #Attaque basique
-            print(HérosCombat.AttaqueBasique(Monstre))
+            print(HérosCombat.AttaqueBasique(MonstreCombat))
 
         elif choix == 2 and ChoixHéros == 1: #Lancer un projectile (Salie)
-            print(HérosCombat.LancerProjectile(Monstre))
+            print(HérosCombat.LancerProjectile(MonstreCombat))
 
         elif choix == 2 and ChoixHéros == 2: #Parer (Magnus)
             HérosCombat.ParerCondition = True
@@ -364,7 +369,7 @@ def mainCombat():
 
         elif choix == 3 and ChoixHéros == 2: #Lancer l'arme (Magnus)
             print("Vous avez lancé(e) votre arme ! ")
-            print(HérosCombat.LancerArme(Monstre))
+            print(HérosCombat.LancerArme(MonstreCombat))
 
         elif (choix == 3 and ChoixHéros == 1) or (choix == 4 and ChoixHéros == 2): #Utiliser un consommable
             print(HérosCombat.UtiliserConsommable(Héros))
@@ -379,28 +384,36 @@ def mainCombat():
 
         print("--------------------")
 
-        if hasattr(Monstre, "FireCondition") and Monstre.FireCondition:
-            Monstre.Enflammé(HérosCombat)
-            print(f"{Monstre.name} prend {HérosCombat.FireDOT} dégâts de feu. ")
-        if hasattr(Monstre, "AcidCondition") and Monstre.AcidCondition:
-            Monstre.Acidifié(HérosCombat)
-            print(f"{Monstre.name} prend {HérosCombat.AcidDOT} dégâts d'acide. ")
-        if hasattr(Monstre, "PoisonCondition") and Monstre.PoisonCondition:
-            Monstre.Empoisonné(HérosCombat)
-            print(f"{Monstre.name} prend {HérosCombat.PoisonDOT} dégâts de poison. ")
-        if not Monstre.estVivant():
+        if hasattr(MonstreCombat, "FireCondition") and MonstreCombat.FireCondition:
+            MonstreCombat.Enflammé(HérosCombat)
+            print(f"{MonstreCombat.nom} prend {HérosCombat.FireDOT} dégâts de feu. ")
+        if hasattr(MonstreCombat, "AcidCondition") and MonstreCombat.AcidCondition:
+            MonstreCombat.Acidifié(HérosCombat)
+            print(f"{MonstreCombat.nom} prend {HérosCombat.AcidDOT} dégâts d'acide. ")
+        if hasattr(MonstreCombat, "PoisonCondition") and MonstreCombat.PoisonCondition:
+            MonstreCombat.Empoisonné(HérosCombat)
+            print(f"{MonstreCombat.nom} prend {HérosCombat.PoisonDOT} dégâts de poison. ")
+
+        print(f"La vie de {MonstreCombat.nom} : {MonstreCombat.HP}/{Monstre.HP}")
+        print("--------------------")
+
+        if not MonstreCombat.estVivant():
             print("--------------------")
-            print(f"{Monstre.nom} est mort ! Vous avez gagné ! ")
+            print(f"{MonstreCombat.nom} est mort ! Vous avez gagné ! ")
             break
         
         print("L'ennemi attaque ! ")
-        print(Monstre.AttaqueBasique(Héros))
+        print(MonstreCombat.AttaqueBasique(Héros))
 
         print("--------------------")
 
         if not Héros.estVivant():
             print("Vous êtes mort ! ")
             break
+        
+        Tour += 1
+        print(f"Tour : {Tour}")
+        print("--------------------")
 
 
 while True:
@@ -426,7 +439,8 @@ while True:
 print("--------------------")
 
 SummonMonstre(1)
-print(f"Vous affrontez {Monstre.nom} ! ")
-print(f"Ses statistiques : {Monstre.HP, Monstre.DEF, Monstre.DMG, Monstre.critluck, Monstre.luck}")
+print(f"Vous affrontez {MonstreCombat.nom} ! ")
+print(f"Ses statistiques : PV : {MonstreCombat.HP}, DEF : {MonstreCombat.DEF}, ATK : {MonstreCombat.DMG}, Chance de critiques : {MonstreCombat.critluck}, Chance : {MonstreCombat.luck}")
+print("--------------------")
 
 mainCombat()
