@@ -6,14 +6,9 @@ Fuite = False
 Esquive = False
 ArmeLancée = False
 ChanceParer = 0.40
+inventaire = {"(1) Potions de soin":3, "(2) Potion de régénération":1, "(3) Potion de défense":2, "(4) Potion de rage":2, "(5) Piment":1}
+invPotiondeSoin = {"(1) Soin Faible":2, "(2) Soin Moyen":1, "(3) Soin Elevé":0}
 
-def isInt(fonction):
-    try:
-        fonction = int(fonction)
-        return True
-    except ValueError:
-        return False
-    
 def Critique(critluck, dmg):
     crit = False
     critdmg = rd.random() + 1
@@ -63,8 +58,9 @@ class Personnage:
             print("2 : Boule de feu")
             print("3 : Potion jetable d'acide")
             print("4 : Parfum empoisonné")
-            choixProjectile = int(input("Votre projectile : "))
-            if choixProjectile == 1: #Tonneau explosif
+            choixProjectile = input("Votre projectile : ")
+
+            if choixProjectile == "1": #Tonneau explosif
                 print("Tonneau explosif")
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
                 DamageDealt = int(DamageDealt*0.9)
@@ -72,7 +68,7 @@ class Personnage:
                 return ""
 
 
-            if choixProjectile == 2: #Boule de feu
+            if choixProjectile == "2": #Boule de feu
                 target.FireCondition = True
                 target.FireTours = 3
                 print("Boule de feu")
@@ -83,7 +79,7 @@ class Personnage:
                 return ""
 
                 
-            if choixProjectile == 3: #Potion jetable d'acide
+            if choixProjectile == "3": #Potion jetable d'acide
                 print("Potion jetable d'acide")
                 target.AcidCondition = True
                 target.AcidTours = 3
@@ -94,7 +90,7 @@ class Personnage:
                 return ""
 
                 
-            if choixProjectile == 4: #Parfum de poison
+            if choixProjectile == "4": #Parfum de poison
                 target.PoisonCondition = True
                 target.PoisonTours = 999
                 print("Parfum empoisonné")
@@ -120,46 +116,41 @@ class Personnage:
 
     def LancerArme(self, target): #Magnus Action 3
         self.ArmeLancée = True
-        DamageDealt, crit = Critique(self.critluck, self.DMG)
-        DamageDealt = int(DamageDealt*2)
-        target.DégâtsSubis(DamageDealt, crit)
-        self.DMG = self.DMG / 2
-
+        if not self.ArmeLancée:
+            DamageDealt, crit = Critique(self.critluck, self.DMG)
+            DamageDealt = int(DamageDealt*2)
+            target.DégâtsSubis(DamageDealt, crit)
+            self.DMG = self.DMG / 2
 
 
     def UtiliserConsommable(self, Héros): #Action 3 / 4
+        global inventaire
         while True:
-            print("Choisissez un consommable : ")
-            print("1 : Potion de soin")
-            print("2 : Potion de régénération")
-            print("3 : Potion de défense")
-            print("4 : Potion de rage (dégâts augmentés)")
-            print("5 : Piment (Chance d'esquiver les attaques)")
-            choixConsommable = int(input("Votre projectile : "))
+            for key,value in inventaire.items():
+                print(f"{key} : {value}")
+            choixConsommable = input("Votre projectile : ")
 
-            if choixConsommable == 1: #Soin
+            if choixConsommable == "1": #Soin
                 while True:
-                    print("Veuillez choisir la taille de votre potion de soin. ")
-                    print("1 : Petite potion de soin (soigne 25% de vie) ")
-                    print("2 : Potion de soin moyenne (soigne 40% de vie) ")
-                    print("3 : Grande potion de soin (soigne 70% de vie)")
-                    choixPotionDeSoin = int(input("Choisissez une taille de soin : "))
+                    for key,value in invPotiondeSoin.items():
+                        print(f"{key} : {value}")
+                    choixPotionDeSoin = input("Choisissez une taille de soin : ")
 
-                    if choixPotionDeSoin == 1:
+                    if choixPotionDeSoin == "1":
                         self.HP = int(self.HP + (Héros.HP*0.20))
                         if self.HP > Héros.HP:
                             self.HP = Héros.HP
                         print(f"Vous vous soignez de {int(Héros.HP*0.20)}. Votre vie : {self.HP}")
                         break
 
-                    if choixPotionDeSoin == 2:
+                    if choixPotionDeSoin == "2":
                         self.HP = int(self.HP + (Héros.HP*0.45))
                         if self.HP > Héros.HP:
                             self.HP = Héros.HP
                         print(f"Vous vous soignez de {int(Héros.HP*0.45)}. Votre vie : {self.HP}")
                         break
 
-                    if choixPotionDeSoin == 3:
+                    if choixPotionDeSoin == "3":
                         self.HP = int(self.HP + (Héros.HP*0.70))
                         if self.HP > Héros.HP:
                             self.HP = Héros.HP
@@ -170,27 +161,27 @@ class Personnage:
                         continue
                 return ""
 
-            if choixConsommable == 2: #Regen
+            if choixConsommable == "2": #Regen
                 self.RegenCondition = True
                 self.RegenTours = 5
                 print(f"Vous vous soignerez de {int(Héros.HP*0.2)} pendant 5 tours. Votre vie : {self.HP}.")
                 return ""
 
-            if choixConsommable == 3: #DEFUp
+            if choixConsommable == "3": #DEFUp
                 self.DEFCondition = True
                 self.DEFTours = 5                
                 self.DEF = int(self.DEF*1.35)
                 print(f"Vous augmentez votre défense de {self.DEF} pendant 5 tours. Votre défense : {self.DEF}")
                 return ""
             
-            if choixConsommable == 4: #DMGUp
+            if choixConsommable == "4": #DMGUp
                 self.RageCondition = True
                 self.RageTours = 5
                 self.DMG = int(self.DMG*1.50)
                 print(f"Vous êtes enragé(e) ! Vos attaques infligeront 50% de dégats supplémentaires pendant 5 tours. Vos dégâts : {self.DMG}.")
                 return ""
             
-            if choixConsommable == 5: #Esquive
+            if choixConsommable == "5": #Esquive
                 self.EsquiveCondition = True
                 self.EsquiveTours = 5
                 print("Vous avez une chance d'esquiver l'attaque ennemie (5 tours). ")
@@ -352,29 +343,29 @@ def mainCombat():
             print("4 : Utiliser un consommable")
             print("5 : Tentative de fuite")
         
-        choix = int(input("Votre action : "))
+        choix = input("Votre action : ")
 
         print("--------------------")
 
-        if choix == 1: #Attaque basique
+        if choix == "1": #Attaque basique
             print(HérosCombat.AttaqueBasique(MonstreCombat))
 
-        elif choix == 2 and ChoixHéros == 1: #Lancer un projectile (Salie)
+        elif choix == "2" and ChoixHéros == "1": #Lancer un projectile (Salie)
             print(HérosCombat.LancerProjectile(MonstreCombat))
 
-        elif choix == 2 and ChoixHéros == 2: #Parer (Magnus)
+        elif choix == "2" and ChoixHéros == "2": #Parer (Magnus)
             HérosCombat.ParerCondition = True
             HérosCombat.ParerTours = 3
             print("Vous avez 40% de chance de parer les trois prochaines attaques. ")
 
-        elif choix == 3 and ChoixHéros == 2: #Lancer l'arme (Magnus)
+        elif choix == "3" and ChoixHéros == "2": #Lancer l'arme (Magnus)
             print("Vous avez lancé(e) votre arme ! ")
             print(HérosCombat.LancerArme(MonstreCombat))
 
-        elif (choix == 3 and ChoixHéros == 1) or (choix == 4 and ChoixHéros == 2): #Utiliser un consommable
+        elif (choix == "3" and ChoixHéros == "1") or (choix == "4" and ChoixHéros == "2"): #Utiliser un consommable
             print(HérosCombat.UtiliserConsommable(Héros))
 
-        elif (choix == 4 and ChoixHéros == 1) or (choix == 5 and ChoixHéros == 2):
+        elif (choix == "4" and ChoixHéros == "1") or (choix == "5" and ChoixHéros == "2"):
             print(HérosCombat.TentativeFuite())
             if Héros.Fuite == True:
                 return ""
@@ -420,17 +411,17 @@ while True:
     print("Quel personnage voulez-vous choisir ? ")
     print("1 : Salie (PV : 100, DEF : 4, ATK : 10, ChanceCritique : 25, Chance : 75)")
     print("2 : Magnus (PV : 120, DEF : 6, ATK : 8, ChanceCritique : 30, Chance : 60)")
-    ChoixHéros = int(input("Entrez un nombre : "))
-    if ChoixHéros != 1 and ChoixHéros != 2:
+    ChoixHéros = input("Entrez un nombre : ")
+    if ChoixHéros != "1" and ChoixHéros != "2":
         print("Veuillez entrer un nombre valide. ")
         continue
 
-    if ChoixHéros == 1:
+    if ChoixHéros == "1":
         Héros = Personnage("Salie", 100, 4, 10, 0.25, 0.75) #nom, PV, DEF, ATK, %crit, %luck
         print("Vous avez choisi Salie.")
         HérosCombat = Héros
         break
-    elif ChoixHéros == 2:
+    elif ChoixHéros == "2":
         Héros = Personnage("Magnus", 120, 6, 8, 0.30, 0.60) #nom, PV, DEF, ATK, %crit, %luck
         print("Vous avez choisi Magnus.")
         HérosCombat = Héros
