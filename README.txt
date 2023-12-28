@@ -30,9 +30,7 @@ Des combats
 	  			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
 		- Fuire : 25% succès (L'EXP n'est pas obtenu, on va directement à la zone suivante).
 
-Récup d'herbes pour faire des Consommables.
-
-Lors d'une victoire d'un combat, un trésor apparaît :
+Lors d'une victoire de combat, un trésor apparaît :
 	-> des récompenses:
 		- rd.randint(1, 3) qté de Consommables:
 			- Potions de Soin (Grande, Moyenne, Petite)
@@ -40,18 +38,19 @@ Lors d'une victoire d'un combat, un trésor apparaît :
 			- Antidote d'effets d'altérations
 			- Poudre de Camouflage
 			- Piment (bonus d'agilité = 25%luck esquiver l'attaque, dure 3 tours)
+		- +25EXP/100EXP
 		- 25%luck = Mimic :
 		   Attaque élevée (+50%)
 		   Il attaque en premier
-	    Drop un rd.randint(4, 6) Consommables
-	-> +50EXP/100EXP -> LVLup HP/DEF/DMG +15%
+	    	   Drop un rd.randint(4, 6) de Consommables
+		   -> +50EXP/100EXP
 
 Lors d'une défaite : Mort / Recommencer le jeu.
 
 Compétences innées :
-	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT.
- 	LVL 3 - Salie -> Fureur : lance trois projectiles choisis.
-  	LVL 2 -> Adrénaline lorsque HP < 20%, le personnage fait + 50% DMG
+	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT (1 par combat).
+ 	LVL 3 - Salie -> Fureur : lance trois projectiles choisis (5 tours).
+  	LVL 2 - Adrénaline : lorsque HP < 20%, le personnage fait + 50% DMG (passif).
 
 Monstres :
 	lvl 1 : HP : (40-60)     DEF : (1-3)     DMG : (10-14)   critluck : 0.20   luck : 0.40   EXP : 0   LVL : 0
