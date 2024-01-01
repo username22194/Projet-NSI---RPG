@@ -48,7 +48,8 @@ class Personnage:
 #-------------------- Actions --------------------
 
     def AttaqueBasique(self, target): #Action 1
-        print("Attaque Basique")
+        if self.nom == "Magnus" or self.nom == "Salie":
+            print("Attaque Basique")
         DamageDealt, crit = Critique(self.critluck, self.DMG)
         return target.DégâtsSubis(DamageDealt, crit)
 
@@ -125,9 +126,9 @@ class Personnage:
             for key,value in self.inventaire.items():
                 print(f"{key} : {value}")
             choixConsommable = input("Votre choix : ")
-            print("--------------------")
+            print()
 
-            if choixConsommable == "1":
+            if choixConsommable == "1": #Soin
                 if self.inventaire["(1) Potions de soin"] == 0: #Soin
                     print("Vous n'avez plus de potion de soin ! ")
                     continue
@@ -136,7 +137,6 @@ class Personnage:
                     for key,value in self.invPotiondeSoin.items():
                         print(f"{key} : {value}")
                     choixPotionDeSoin = input("Choisissez une taille de soin : ")
-                    print("--------------------")
 
                     if choixPotionDeSoin == "1":
                         if self.invPotiondeSoin["(1) Soin Faible"] != 0:
@@ -145,9 +145,10 @@ class Personnage:
                                 self.HP = self.maxHP
                             self.invPotiondeSoin["(1) Soin Faible"] -= 1
                             self.inventaire["(1) Potions de soin"] -= 1
-                            return f"Vous vous soignez de {int(self.maxHP*0.20)}. Votre vie : {self.HP}"
+                            return f"Vous vous soignez de {int(self.maxHP*0.20)}PV. Votre vie : {self.HP}"
                         else:
                             print("Vous n'avez plus de potion de soin faible ! ")
+                            print()
                             continue
 
                     if choixPotionDeSoin == "2":
@@ -157,9 +158,10 @@ class Personnage:
                                 self.HP = self.maxHP
                             self.invPotiondeSoin["(2) Soin Moyen"] -= 1
                             self.inventaire["(1) Potions de soin"] -= 1
-                            return f"Vous vous soignez de {int(self.maxHP*0.35)}. Votre vie : {self.HP}"
+                            return f"Vous vous soignez de {int(self.maxHP*0.35)}PV. Votre vie : {self.HP}"
                         else:
-                            print("Vous n'avez plus de potion de soin moyenne ! ")
+                            print("Vous n'avez plus de potion de soin moyen ! ")
+                            print()
                             continue
 
                     if choixPotionDeSoin == "3":
@@ -169,16 +171,17 @@ class Personnage:
                                 self.HP = self.maxHP
                             self.invPotiondeSoin["(3) Soin Elevé"] -= 1
                             self.inventaire["(1) Potions de soin"] -= 1
-                            return f"Vous vous soignez de {int(self.maxHP*0.50)}. Votre vie : {self.HP}"
+                            return f"Vous vous soignez de {int(self.maxHP*0.50)}PV. Votre vie : {self.HP}"
                         else:
-                            print("Vous n'avez plus de potion de soin élevée ! ")
+                            print("Vous n'avez plus de potion de soin élevé ! ")
+                            print()
                             continue
 
                     else:
                         print("Veuillez entrer un nombre valide.")
                         continue
 
-            if choixConsommable == "2": #Regen
+            elif choixConsommable == "2": #Regen
                 if self.inventaire["(2) Potion de régénération"] != 0:
                     self.RegenCondition = True
                     self.RegenTours = 5
@@ -188,7 +191,7 @@ class Personnage:
                     print("Vous n'avez plus de potion de régénération ! ")
                     continue
 
-            if choixConsommable == "3": #DEFUp
+            elif choixConsommable == "3": #DEFUp
                 if self.inventaire["(3) Potion de défense"] != 0:
                     self.DEFCondition = True
                     self.DEFTours = 5                
@@ -199,7 +202,7 @@ class Personnage:
                     print("Vous n'avez plus de potion de défense ! ")
                     continue
 
-            if choixConsommable == "4": #DMGUp
+            elif choixConsommable == "4": #DMGUp
                 if self.inventaire["(4) Potion de rage"] != 0:
                     self.RageCondition = True
                     self.RageTours = 5
@@ -213,7 +216,7 @@ class Personnage:
                     print("Vous n'avez plus de potion de rage ! ")
                     continue
             
-            if choixConsommable == "5": #Esquive
+            elif choixConsommable == "5": #Esquive
                 if self.inventaire["(5) Piment"] != 0:
                     self.EsquiveCondition = True
                     self.EsquiveTours = 5
@@ -222,9 +225,10 @@ class Personnage:
                 else:
                     print("Vous n'avez plus de piment ! ")
                     continue
-            
+
             else:
                 print("Veuillez entrer un nombre valide.")
+                print()
                 continue
 
 
@@ -345,6 +349,7 @@ def SummonMonstre(zone):
         luck = 0.40, EXP = 0, lvl = zone)
 
 #-------------------- main --------------------
+
 def ActionJoueur():
     while True:
 
@@ -363,7 +368,7 @@ def ActionJoueur():
             print("(5) Tentative de fuite")
         
         choix = input("Votre action : ")
-        print("--------------------")
+        print()
 
         if choix == "1": #Attaque basique
             print(Héros.AttaqueBasique(Monstre))
@@ -389,6 +394,9 @@ def ActionJoueur():
                 break
             
         elif (choix == "3" and ChoixHéros == "1") or (choix == "4" and ChoixHéros == "2"): #Utiliser un consommable
+            if all(value == 0 for value in Héros.inventaire.values()):
+                print("Vous n'avez plus de consommable ! ")
+                continue
             print(Héros.UtiliserConsommable())
             break
         
@@ -399,15 +407,17 @@ def ActionJoueur():
         else:
             print("Veuillez entrer un nombre valide.")
             continue
-    return "--------------------"
 
 def mainCombat():
     global Héros
-    Tour = 1
-    print(f"Tour : {Tour}")
-    print("--------------------")
+    Tour = 0
 
     while Héros.estVivant() and Monstre.estVivant():
+        Tour += 1
+        print("--------------------")
+        print(f"Tour : {Tour}")
+        print("--------------------")
+        print()
 
         if hasattr(Héros, "RegenCondition") and Héros.RegenCondition:
             print(Héros.Régénération())
@@ -417,11 +427,12 @@ def mainCombat():
             print(Héros.AugmentationDMG())
 
         print(f"{Héros.nom} -> PV : {Héros.HP}/{Héros.maxHP}, DEF : {Héros.DEF}, ATK : {Héros.DMG}")
-        print("--------------------")
+        print()
 
         ActionJoueur()
         if Héros.Fuite:
             break
+        print()
 
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort ! Vous avez gagné ! ")
@@ -438,7 +449,7 @@ def mainCombat():
             print(f"{Monstre.nom} prend {Héros.PoisonDOT} dégâts de poison. ")
 
         print(f"{Monstre.nom} -> PV : {Monstre.HP}/{Monstre.maxHP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}")
-        print("--------------------")
+        print()
 
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort ! Vous avez gagné ! ")
@@ -446,22 +457,19 @@ def mainCombat():
         
         print("L'ennemi attaque ! ")
         print(Monstre.AttaqueBasique(Héros))
-        print("--------------------")
+        print()
 
         if not Héros.estVivant():
             print("Vous êtes mort ! ")
             break
         
-        Tour += 1
-        print(f"Tour : {Tour}")
-        print("--------------------")
-
         
 while True: #Choix du personnage
     print("Quel personnage voulez-vous choisir ? ")
     print("1 : Salie (PV : 100, DEF : 4, ATK : 10, ChanceCritique : 25, Chance : 75)")
     print("2 : Magnus (PV : 120, DEF : 6, ATK : 8, ChanceCritique : 30, Chance : 60)")
     ChoixHéros = input("Entrez un nombre : ")
+    print()
 
     if ChoixHéros == "1":
         Héros = Personnage("Salie", 100, 4, 10, 0.25, 0.75) #nom, PV, DEF, ATK, %crit, %luck
@@ -473,14 +481,14 @@ while True: #Choix du personnage
         break
     else:
         print("Veuillez entrer un nombre valide. ")
-        print("--------------------")
+        print()
         continue
 
-print("--------------------")
+print()
 
 SummonMonstre(1)
 print(f"Vous affrontez {Monstre.nom} ! ")
 print(f"Ses statistiques : PV : {Monstre.HP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}, Chance de coup critique : {Monstre.critluck}, Chance : {Monstre.luck}")
-print("--------------------")
+print()
 
 mainCombat()
