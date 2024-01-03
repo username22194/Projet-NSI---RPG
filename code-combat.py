@@ -510,6 +510,7 @@ def mainCombat(zone, Monstre_nom = None):
         if hasattr(Héros, "RageCondition") and Héros.RageCondition:
             print(Héros.AugmentationDMG())
 
+        print()
         print(f"{Héros.nom} -> PV : {Héros.HP}/{Héros.maxHP}, DEF : {Héros.DEF}, ATK : {Héros.DMG}")
         print()
 
@@ -540,6 +541,7 @@ def mainCombat(zone, Monstre_nom = None):
             Monstre.Empoisonné(Héros)
             print(f"{Monstre.nom} prend {Héros.PoisonDOT} dégâts de poison. ")
 
+        print()
         print(f"{Monstre.nom} -> PV : {Monstre.HP}/{Monstre.maxHP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}")
         print()
 
