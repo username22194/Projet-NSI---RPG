@@ -47,7 +47,7 @@ Lors d'une victoire de combat, un trésor apparaît :
 
 Lors d'une défaite : Mort / Recommencer le jeu.
 
-On lvlUP : HP / DMG / DEF +15%
+On lvlUP : HP *1.1 / DMG *1.2 / DEF *1.2
 Compétences innées :
 	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT (1 par combat).
  	LVL 3 - Salie -> Fureur : lance trois projectiles choisis (5 tours).
