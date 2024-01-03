@@ -345,9 +345,9 @@ class Personnage:
             return f"{self.nom} prend {DamageDealt} dégâts (coup critique ! ). Sa vie restante : {self.HP}"
         else:
             self.HP -= max(0, DamageDealt - self.DEF)
-            return f"{self.nom} prend {DamageDealt - self.DEF} dégâts. Sa vie restante : {self.HP}"
+            return f"{self.nom} prend {max(0, DamageDealt - self.DEF)} dégâts. Sa vie restante : {self.HP}"
         
-#-------------------- Inventaire -> Consommables.get --------------------
+#-------------------- Inventaire -> get consommables --------------------
 
 def ObtenirConsommable(amount):
     global inventaire
@@ -399,7 +399,7 @@ def SummonMonstre(zone, nom = None):
             HP = rd.randint(*HP_range)
             DEF = rd.randint(*DEF_range)
             DMG = rd.randint(*DMG_range)
-    else: #monstre aléatoire
+    else: #monstre nom aleatoire
         nom = rd.choice(monstre_zone[zone-1])
         HP = rd.randint(*HP_range)
         DEF = rd.randint(*DEF_range)
@@ -410,6 +410,26 @@ def SummonMonstre(zone, nom = None):
 
 #-------------------- main --------------------
 
+
+def isMimic():
+    if rd.random() <= 0.25:
+        return True
+    else:
+        return False
+    
+def Trésor(zone):
+    print("Vous obtenez un trésor ! ")
+    print("Voulez-vous l'ouvrir ? ")
+    if YesorNo():
+        if isMimic():
+            print("C'était un Mimic, vous vous êtes fait avoir ! ")
+            print()
+            mainCombat(zone, "Mimic")
+        else:
+            return ObtenirConsommable(3)
+    else:
+        return "Vous laissez le coffre. "
+    
 def ActionJoueur():    
     while True:
 
@@ -468,25 +488,6 @@ def ActionJoueur():
             print("Veuillez entrer un nombre valide.")
             continue
 
-def isMimic():
-    if rd.random() <= 0.25:
-        return True
-    else:
-        return False
-    
-def Trésor(zone):
-    print("Vous obtenez un trésor ! ")
-    print("Voulez-vous l'ouvrir ? ")
-    if YesorNo():
-        if isMimic():
-            print("C'était un Mimic, vous vous êtes fait avoir ! ")
-            print()
-            mainCombat(zone, "Mimic")
-        else:
-            return ObtenirConsommable(3)
-    else:
-        return "Vous laissez le coffre. "
-
 def mainCombat(zone, Monstre_nom = None):
     SummonMonstre(zone, Monstre_nom)
     print(f"Vous affrontez {Monstre.nom} ! ")
@@ -520,8 +521,12 @@ def mainCombat(zone, Monstre_nom = None):
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort, Vous avez gagné ! ")
             Héros.EXP += 25
+            print(f"Vous obtenez 25 points d'expérience ({Héros.EXP}/100). ")
             if Héros.EXP == 100:
                 print(Héros.LVLUP())
+            if Héros.ArmeLancée:
+                print("Vous ramassez votre arme. ")
+                Héros.ArmeLancée = False
             print(Trésor(zone))
             return ""
 
@@ -540,12 +545,13 @@ def mainCombat(zone, Monstre_nom = None):
 
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort, Vous avez gagné ! ")
+            Héros.EXP += 25
+            print(f"Vous obtenez 25 points d'expérience ({Héros.EXP}/100). ")
+            if Héros.EXP == 100:
+                print(Héros.LVLUP())
             if Héros.ArmeLancée:
                 print("*Vous ramassez votre arme. ")
                 Héros.ArmeLancée = False
-            Héros.EXP += 25
-            if Héros.EXP == 100:
-                print(Héros.LVLUP())
             print(Trésor(zone))
             return ""
         
@@ -583,4 +589,3 @@ print()
 
 
 mainCombat(1)
-
