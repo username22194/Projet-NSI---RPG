@@ -1,8 +1,21 @@
 import random as rd
 import time
 
-inventaire = {"(1) Potions de soin":3, "(2) Potion de régénération":1, "(3) Potion de défense":2, "(4) Potion de rage":2, "(5) Piment":1}
-invPotiondeSoin = {"(1) Potion de soin Faible":2, "(2) Potion de soin Moyen":1, "(3) Potion de soin Elevé":0}
+inventaire = {"(1) Potions de soin": 0, "(2) Potion de régénération": 0, "(3) Potion de défense": 0, "(4) Potion de rage": 0, "(5) Piment": 0}
+pourcentages_inventaire = {"(1) Potions de soin": 30, "(2) Potion de régénération": 15, "(3) Potion de défense": 20, "(4) Potion de rage": 20, "(5) Piment": 15}
+
+invPotiondeSoin = {"(1) Potion de soin Faible":0, "(2) Potion de soin Moyen":0, "(3) Potion de soin Elevé":0}
+pourcentages_invPotiondeSoin = {"(1) Potion de soin Faible":50, "(2) Potion de soin Moyen":35, "(3) Potion de soin Elevé":15}
+
+for p in range(12):
+    choix_potion = rd.choices(list(inventaire.keys()), weights=[pourcentages_inventaire[p] for p in inventaire])
+    inventaire[choix_potion[0]] += 1
+
+nb_potions_soin = inventaire["(1) Potions de soin"]
+
+for h in range(nb_potions_soin):
+    choix_soin = rd.choices(list(invPotiondeSoin.keys()), weights=[pourcentages_invPotiondeSoin[h] for h in invPotiondeSoin])
+    invPotiondeSoin[choix_soin[0]] += 1
 
 def YesorNo():
     while True:
