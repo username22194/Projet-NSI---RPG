@@ -487,7 +487,6 @@ def mainCombat(zone, Monstre_nom):
     print(f"Vous affrontez {Monstre.nom} ! ")
     print(f"Ses statistiques : PV : {Monstre.HP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}, Chance de coup critique : {Monstre.critluck}, Chance : {Monstre.luck}")
     print()
-    global Héros
     Tour = 0
 
     while Héros.estVivant() and Monstre.estVivant():
