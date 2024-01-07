@@ -482,7 +482,7 @@ def ActionJoueur():
             time.sleep(0.35)
             continue
 
-def mainCombat(zone, Monstre_nom = None):
+def mainCombat(zone, Monstre_nom):
     SummonMonstre(zone, Monstre_nom)
     print(f"Vous affrontez {Monstre.nom} ! ")
     print(f"Ses statistiques : PV : {Monstre.HP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}, Chance de coup critique : {Monstre.critluck}, Chance : {Monstre.luck}")
@@ -564,28 +564,40 @@ def mainCombat(zone, Monstre_nom = None):
         if not Héros.estVivant():
             print("Vous êtes mort ! ")
             return False
-        
-                
 
-while True: #Choix du personnage
-    print("Quel personnage voulez-vous choisir ? ")
-    print("1 : Salie (PV : 100, DEF : 4, ATK : 10, ChanceCritique : 25, Chance : 75)")
-    print("2 : Magnus (PV : 120, DEF : 6, ATK : 8, ChanceCritique : 30, Chance : 60)")
-    ChoixHéros = input("Entrez un nombre : ")
+def main(zone, Monstre_nom):
+    while True:
+        if not mainCombat(zone, Monstre_nom):
+            print("Voulez vous recommencer le combat ? ")
+            if YesorNo():
+                continue
+            else:
+                exit()
+        else:
+            break
+                
+def ChoisirHéros():
+    global ChoixHéros
+    global Héros
+    while True: #Choix du personnage
+        print("Quel personnage voulez-vous choisir ? ")
+        print("1 : Salie (PV : 100, DEF : 4, ATK : 10, ChanceCritique : 25, Chance : 75)")
+        print("2 : Magnus (PV : 120, DEF : 6, ATK : 8, ChanceCritique : 30, Chance : 60)")
+        ChoixHéros = input("Entrez un nombre : ")
+        print()
+
+        if ChoixHéros == "1":
+            Héros = Personnage("Salie", 100, 4, 10, 0.25, 0.75) #nom, PV, DEF, ATK, %crit, %luck
+            print("Vous avez choisi Salie.")
+            break
+        elif ChoixHéros == "2":
+            Héros = Personnage("Magnus", 120, 6, 8, 0.30, 0.60) #nom, PV, DEF, ATK, %crit, %luck
+            print("Vous avez choisi Magnus.")
+            break
+        else:
+            print("Veuillez entrer un nombre valide. ")
+            print()
+            continue
     print()
 
-    if ChoixHéros == "1":
-        Héros = Personnage("Salie", 100, 4, 10, 0.25, 0.75) #nom, PV, DEF, ATK, %crit, %luck
-        print("Vous avez choisi Salie.")
-        break
-    elif ChoixHéros == "2":
-        Héros = Personnage("Magnus", 120, 6, 8, 0.30, 0.60) #nom, PV, DEF, ATK, %crit, %luck
-        print("Vous avez choisi Magnus.")
-        break
-    else:
-        print("Veuillez entrer un nombre valide. ")
-        print()
-        continue
-print()
-
-mainCombat(1, "un Gobelin")
+# mainCombat(1, "un Gobelin")
