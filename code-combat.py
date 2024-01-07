@@ -67,10 +67,10 @@ class Personnage:
         print("Vous avez augmenté de niveau ! ")
         self.lvl += 1
         self.EXP -= 100
-        self.maxHP = int(self.maxHP * 1.10)
+        self.maxHP += rd.randint(20, 30)
         self.HP = self.maxHP
-        self.maxDEF = int(self.maxDEF * 1.20)
-        self.maxDMG = int(self.maxDMG * 1.25)
+        self.maxDEF += rd.randint(1, 4)
+        self.maxDMG += rd.randint(2, 6)
 
     def PassifBlockATK(self):
         if rd.random() < 0.20:
@@ -473,6 +473,7 @@ def ActionJoueur():
         elif choix == "3" and ChoixHéros == "2": #Lancer l'arme (Magnus)
             if Héros.ArmeLancée:
                 print("Vous avez déjà lancé votre arme ! ")
+                time.sleep(0.35)
                 continue
             else:
                 print(Héros.LancerArme(Monstre))
@@ -502,7 +503,7 @@ def mainCombat(zone, Monstre_nom):
     print()
     Tour = 0
 
-    while Héros.estVivant() and Monstre.estVivant():
+    while True:
         Tour += 1
         time.sleep(1)
         print("--------------------")
@@ -582,6 +583,8 @@ def main(zone, Monstre_nom):
         if not mainCombat(zone, Monstre_nom):
             print("Voulez vous recommencer le combat ? ")
             if YesorNo():
+                Héros.HP = Héros.maxHP
+                Héros.ArmeLancée = False
                 continue
             else:
                 exit()
@@ -612,4 +615,5 @@ def ChoisirHéros():
             continue
     print()
 
-# mainCombat(1, "un Gobelin")
+# ChoisirHéros()
+# main(5, "un Gobelin")
