@@ -1,4 +1,5 @@
 import random as rd
+import time
 
 inventaire = {"(1) Potions de soin":3, "(2) Potion de régénération":1, "(3) Potion de défense":2, "(4) Potion de rage":2, "(5) Piment":1}
 invPotiondeSoin = {"(1) Potion de soin Faible":2, "(2) Potion de soin Moyen":1, "(3) Potion de soin Elevé":0}
@@ -52,7 +53,7 @@ class Personnage:
     def LVLUP(self):
         print("Vous avez augmenté de niveau ! ")
         self.lvl += 1
-        self.EXP = 0
+        self.EXP -= 100
         self.maxHP = int(self.maxHP * 1.10)
         self.HP = self.maxHP
         self.maxDEF = int(self.maxDEF * 1.20)
@@ -69,6 +70,7 @@ class Personnage:
     def AttaqueBasique(self, target): #Action 1
         if self.nom == "Magnus" or self.nom == "Salie":
             print("Attaque Basique")
+            time.sleep(0.5)
         DamageDealt, crit = Critique(self.critluck, self.DMG)
         return target.DégâtsSubis(DamageDealt, crit)
 
@@ -85,6 +87,7 @@ class Personnage:
 
             if choixProjectile == "1": #Tonneau explosif
                 print("Tonneau explosif")
+                time.sleep(0.5)
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
                 DamageDealt = int(DamageDealt*0.9)
                 return target.DégâtsSubis(DamageDealt, crit)
@@ -94,6 +97,7 @@ class Personnage:
                 target.FireCondition = True
                 target.FireTours = 3
                 print("Boule de feu")
+                time.sleep(0.5)
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
                 DamageDealt = int(DamageDealt*0.75)
                 print(target.DégâtsSubis(DamageDealt, crit))
@@ -102,6 +106,7 @@ class Personnage:
                 
             if choixProjectile == "3": #Potion jetable d'acide
                 print("Potion jetable d'acide")
+                time.sleep(0.5)
                 target.AcidCondition = True
                 target.AcidTours = 3
                 DamageDealt, crit = Critique(self.critluck, self.DMG)
@@ -113,6 +118,7 @@ class Personnage:
             if choixProjectile == "4": #Parfum de poison
                 target.PoisonCondition = True
                 print("Parfum empoisonné")
+                time.sleep(0.5)
                 return f"{target.nom} prendra {self.PoisonDOT} dégâts de poison à chaque tour."
             
             else:
@@ -133,6 +139,8 @@ class Personnage:
 
     def LancerArme(self, target): #Magnus Action 3
         self.ArmeLancée = True
+        print("Vous lancez votre arme. ")
+        time.sleep(0.5)
         DamageDealt, crit = Critique(self.critluck, self.DMG)
         DamageDealt = int(DamageDealt*2)
         self.DMG = int(self.DMG/2)
@@ -377,30 +385,17 @@ def ObtenirConsommable(amount):
 
 #-------------------- Invoc de Monstre --------------------
 
-monstres_zone1 = ['Gobelin', 'Loup'] #Village
-monstres_zone2 = ['Gobelin', 'Loup', 'Ogre'] #Plaine
-monstres_zone3 = ['Loup-garou', 'Zombie', 'Ogre', 'Ours'] #Forêt
-monstres_zone4 = ['Loup blanc', 'Ours', 'Orc'] #Montagne
-monstres_zone5 = ['Chevalier déchu'] #Château
-monstre_zone = [monstres_zone1, monstres_zone2, monstres_zone3, monstres_zone4, monstres_zone5]
-
-def SummonMonstre(zone, nom = None):
+def SummonMonstre(zone, nom):
     HP_range = [40 + 20 * (zone - 1), 60 + 20 * (zone - 1)]
     DEF_range = [1 + zone, 3 + zone]
     DMG_range = [10 + 4 * (zone - 1), 14 + 4 * (zone - 1)]
-    if nom is not None:
-        if nom == "Mimic": #stats du Mimic (stats zone + 1)
-            nom = "Mimic"
-            HP = rd.randint(40 + 20 * (zone), 60 + 20 * (zone))
-            DEF = rd.randint(1 + zone+1, 3 + zone+1)
-            DMG = rd.randint(10 + 4 * (zone), 14 + 4 * (zone))
-        else: #monstre avec nom donné
-            nom = nom
-            HP = rd.randint(*HP_range)
-            DEF = rd.randint(*DEF_range)
-            DMG = rd.randint(*DMG_range)
-    else: #monstre nom aleatoire
-        nom = rd.choice(monstre_zone[zone-1])
+    if nom == "Mimic":                                          #stats du Mimic (plus de DMG / DEF, moins de HP)
+        nom = nom
+        HP = rd.randint(40 + 20 * (zone-1), 60 + 20 * (zone-1)) #HP de zone-1
+        DEF = rd.randint(1 + zone+1, 3 + zone+1)                #DEF de zone+1
+        DMG = rd.randint(10 + 5 * (zone), 14 + 5 * (zone))      #multiplicateur de DMG plus élevé + zone+1
+    else: #monstre avec nom donné
+        nom = nom
         HP = rd.randint(*HP_range)
         DEF = rd.randint(*DEF_range)
         DMG = rd.randint(*DMG_range)
@@ -467,7 +462,6 @@ def ActionJoueur():
                 print("Vous avez déjà lancé votre arme ! ")
                 continue
             else:
-                print("Vous avez lancé(e) votre arme ! ")
                 print(Héros.LancerArme(Monstre))
                 break
             
@@ -485,6 +479,7 @@ def ActionJoueur():
         
         else:
             print("Veuillez entrer un nombre valide.")
+            time.sleep(0.35)
             continue
 
 def mainCombat(zone, Monstre_nom = None):
@@ -497,10 +492,10 @@ def mainCombat(zone, Monstre_nom = None):
 
     while Héros.estVivant() and Monstre.estVivant():
         Tour += 1
+        time.sleep(1)
         print("--------------------")
         print(f"Tour : {Tour}")
         print("--------------------")
-        print()
 
         if hasattr(Héros, "RegenCondition") and Héros.RegenCondition:
             print(Héros.Régénération())
@@ -512,21 +507,24 @@ def mainCombat(zone, Monstre_nom = None):
         print()
         print(f"{Héros.nom} -> PV : {Héros.HP}/{Héros.maxHP}, DEF : {Héros.DEF}, ATK : {Héros.DMG}")
         print()
+        time.sleep(1)
 
         ActionJoueur()
-        if Héros.Fuite:
-            break
+        # if Héros.Fuite:
+        #     break
         print()
+        time.sleep(2)
 
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort, Vous avez gagné ! ")
-            Héros.EXP += 25
-            print(f"Vous obtenez 25 points d'expérience ({Héros.EXP}/100). ")
+            Héros.EXP += 75
+            print(f"Vous obtenez 75 points d'expérience ({Héros.EXP}/100). ")
             if Héros.EXP == 100:
                 print(Héros.LVLUP())
             if Héros.ArmeLancée:
                 print("Vous ramassez votre arme. ")
                 Héros.ArmeLancée = False
+            time.sleep(1)
             print(Trésor(zone))
             return ""
 
@@ -543,20 +541,23 @@ def mainCombat(zone, Monstre_nom = None):
         print()
         print(f"{Monstre.nom} -> PV : {Monstre.HP}/{Monstre.maxHP}, DEF : {Monstre.DEF}, ATK : {Monstre.DMG}")
         print()
+        time.sleep(1)
 
         if not Monstre.estVivant():
             print(f"{Monstre.nom} est mort, Vous avez gagné ! ")
-            Héros.EXP += 25
-            print(f"Vous obtenez 25 points d'expérience ({Héros.EXP}/100). ")
+            Héros.EXP += 75
+            print(f"Vous obtenez 75 points d'expérience ({Héros.EXP}/100). ")
             if Héros.EXP == 100:
                 print(Héros.LVLUP())
             if Héros.ArmeLancée:
                 print("*Vous ramassez votre arme. ")
                 Héros.ArmeLancée = False
+            time.sleep(1)
             print(Trésor(zone))
             return ""
         
         print("L'ennemi attaque ! ")
+        time.sleep(0.5)
         print(Monstre.AttaqueBasique(Héros))
         print()
 
@@ -586,3 +587,5 @@ while True: #Choix du personnage
         print()
         continue
 print()
+
+mainCombat(1, "un Gobelin")
