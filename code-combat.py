@@ -41,7 +41,7 @@ class Personnage:
         self.Parer = False
         self.Esquive = False
         self.ArmeLancée = False
-        self.Fuite = False
+        # self.Fuite = False Cette possibilité a été retirée
         self.FireDOT = int(self.DMG*0.35)
         self.AcidDOT = int(self.DMG*0.70)
         self.PoisonDOT = int(self.DMG*0.25)
@@ -252,14 +252,14 @@ class Personnage:
                 print()
                 continue
 
-
-    def TentativeFuite(self):
-        ChanceFuite = self.luck/2
-        if rd.random() < ChanceFuite: #Salie : 0.75/2, Magnus : 0.6/2
-            self.Fuite = True
-            return "Vous avez réussi à vous enfuir ! "
-        else:
-            return "Vous ne parvenez pas à vous enfuir. "
+#Cette action a été retirée.
+    # def TentativeFuite(self):
+    #     ChanceFuite = self.luck/2
+    #     if rd.random() < ChanceFuite: #Salie : 0.75/2, Magnus : 0.6/2
+    #         self.Fuite = True
+    #         return "Vous avez réussi à vous enfuir ! "
+    #     else:
+    #         return "Vous ne parvenez pas à vous enfuir. "
 
 #-------------------- Buffs --------------------
 
@@ -438,14 +438,12 @@ def ActionJoueur():
             print("(1) Attaque basique")
             print("(2) Lancer un objet")
             print("(3) Utiliser un consommable")
-            print("(4) Tentative de fuite")
         if ChoixHéros == "2":
             print("Quelle action ? Entrez un nombre : ")
             print("(1) Attaque basique")
             print("(2) Chance de parer (3 fois)")
             print("(3) Lancer votre arme (2x dégâts, mais vous infligerez ensuite ATK/2)")
             print("(4) Utiliser un consommable")
-            print("(5) Tentative de fuite")
         
         choix = input("Votre action : ")
         print()
@@ -480,9 +478,10 @@ def ActionJoueur():
             print(Héros.UtiliserConsommable())
             break
         
-        elif (choix == "4" and ChoixHéros == "1") or (choix == "5" and ChoixHéros == "2"): #Fuire
-            print(Héros.TentativeFuite())
-            break
+    #Cette action a été retirée.
+        # elif (choix == "4" and ChoixHéros == "1") or (choix == "5" and ChoixHéros == "2"): #Fuire
+        #     print(Héros.TentativeFuite())
+        #     break
         
         else:
             print("Veuillez entrer un nombre valide.")
@@ -587,7 +586,3 @@ while True: #Choix du personnage
         print()
         continue
 print()
-
-
-
-mainCombat(1)
