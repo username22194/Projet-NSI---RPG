@@ -45,18 +45,14 @@ Lors d'une victoire de combat, un trésor apparaît :
 	    	   Drop un rd.randint(4, 6) de Consommables
 		   -> +50EXP/100EXP
 
-Lors d'une défaite : Mort / Recommencer le jeu.
+Lors d'une défaite : Mort / Recommencer le combat.
 
-On lvlUP : HP *1.1 / DMG *1.2 / DEF *1.2
-Compétences innées :
-	LVL 3 - Magnus -> Berserk : les trois prochaines attaques ont 100% de CRIT (1 par combat).
- 	LVL 3 - Salie -> Fureur : lance trois projectiles choisis (5 tours).
-  	LVL 2 - Adrénaline : lorsque HP < 20%, le personnage fait + 50% DMG (passif).
-
+On lvlUP : HP += 20-30 / DMG += 2-6 / DEF += 1-4
 Monstres :
 	lvl 1 : HP : (40-60)     DEF : (1-3)     DMG : (10-14)   critluck : 0.20   luck : 0.40   EXP : 0   LVL : 0
  	lvl 2 : HP : (61-85)     DEF : (2-5)     DMG : (14-18)   critluck : 0.25   luck : 0.40   EXP : 0   LVL : 1
    	lvl 3 : HP : (86-115)    DEF : (4-8)     DMG : (18-22)   critluck : 0.30   luck : 0.40   EXP : 0   LVL : 2
  	lvl 4 : HP : (116-150)   DEF : (7-13)    DMG : (22-26)   critluck : 0.35   luck : 0.40   EXP : 0   LVL : 3
  	lvl 5 : HP : (151-195)   DEF : (12-18)   DMG : (26-30)   critluck : 0.40   luck : 0.40   EXP : 0   LVL : 4
-  	25%luck Parer Attaque basique.
+  	25%luck Parer
+    Attaque basique.
