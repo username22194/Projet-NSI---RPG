@@ -1,6 +1,6 @@
 import random as rd
 import time
-
+#Mimic on death issue
 inventaire = {"(1) Potions de soin": 0, "(2) Potion de régénération": 0, "(3) Potion de défense": 0, "(4) Potion de rage": 0, "(5) Piment": 0}
 invPotiondeSoin = {"(1) Potion de soin Faible":0, "(2) Potion de soin Moyen":0, "(3) Potion de soin Elevé":0}
 Perdu = False
@@ -389,8 +389,8 @@ def SummonMonstre(zone, nom):
     DMG_range = [10 + 4 * (zone - 1), 14 + 4 * (zone - 1)]
     if nom == "Mimic":                                          #stats du Mimic (plus de DMG / DEF, moins de HP)
         nom = nom
-        HP = rd.randint(40 + 20 * (zone-1), 60 + 20 * (zone-1)) #HP de zone-1
-        DEF = rd.randint(1 + zone+1, 3 + zone+1)                #DEF de zone+1
+        HP = rd.randint(40 + 20 * (zone-2), 60 + 20 * (zone-2)) #HP de zone-1
+        DEF = rd.randint(zone, zone +2)                         #DEF plus faible
         DMG = rd.randint(10 + 5 * (zone), 14 + 5 * (zone))      #multiplicateur de DMG plus élevé + zone+1
     else: #monstre avec nom donné
         nom = nom
@@ -415,8 +415,7 @@ def Trésor(zone):
     print("Voulez-vous l'ouvrir ? ")
     if YesorNo():
         if isMimic():
-            print("C'était un Mimic, vous vous êtes fait avoir ! ")
-            print()
+            print("C'était un Mimic, vous vous êtes fait avoir ! \n")
             mainCombat(zone, "Mimic")
         else:
             print("Vous obtenez les consommables suivants : ")
